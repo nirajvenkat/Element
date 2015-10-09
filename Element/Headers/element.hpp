@@ -1,6 +1,6 @@
 // Preprocessor Directives
-#ifndef GLITTER
-#define GLITTER
+#ifndef ELEMENT
+#define ELEMENT
 #pragma once
 
 // System Headers
@@ -12,7 +12,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-<<<<<<< HEAD
 //  Reference: https://github.com/nothings/stb/blob/master/stb_image.h#L4
 //  To use stb_image, add this in *one* C++ source file.
 #define STB_IMAGE_IMPLEMENTATION

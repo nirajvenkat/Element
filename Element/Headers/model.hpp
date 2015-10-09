@@ -11,7 +11,7 @@ using namespace std;
 // System Headers
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <glitter.hpp>
+#include <element.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <assimp/Importer.hpp>

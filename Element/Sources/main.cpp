@@ -1,5 +1,5 @@
 // Local Headers
-#include "glitter.hpp"
+#include "element.hpp"
 
 // System Headers
 #include <glad/glad.h>
@@ -89,11 +89,11 @@ int main()
 	glEnable(GL_MULTISAMPLE);
 
 	// Setup and compile our shaders
-	Shader shader1("C:/Users/Niraj/Desktop/GitRepos/Glitter/Glitter/Shaders/sample_vert.glv", "C:/Users/Niraj/Desktop/GitRepos/Glitter/Glitter/Shaders/sample_frag.glf");
-	Shader shader2("C:/Users/Niraj/Desktop/GitRepos/Glitter/Glitter/Shaders/sample_vert.glv", "C:/Users/Niraj/Desktop/GitRepos/Glitter/Glitter/Shaders/sample_frag.glf");
+	Shader shader1("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_vert.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_frag.glf");
+	Shader shader2("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_vert.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_frag.glf");
 
 	// Load models
-	Model nano("C:/Users/Niraj/Desktop/GitRepos/Glitter/Glitter/Models/Nanosuit/nanosuit.obj");
+	Model nano("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Models/Nanosuit/nanosuit.obj");
 
 	// Draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

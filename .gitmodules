@@ -3,7 +3,7 @@
 	url = https://github.com/assimp/assimp.git
 [submodule "Element/Vendor/glad"]
 	path = Element/Vendor/glad
-	url = https://github.com/Dav1dde/glad.git
+	url = https://github.com/Dav1dde/glad/tree/c
 [submodule "Element/Vendor/glfw"]
 	path = Element/Vendor/glfw
 	url = https://github.com/glfw/glfw.git
