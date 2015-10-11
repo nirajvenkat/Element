@@ -133,6 +133,11 @@ int main()
 		glUniformMatrix4fv(glGetUniformLocation(shader2.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 		nano.Draw(shader2);
 
+		std::vector<glm::vec3> grassVec;
+		grassVec.push_back(glm::vec3(0.0f, -1.75f, 0.0f));
+		grassVec.push_back(glm::vec3(0.0f, -1.75f, 0.0f));
+		grassVec.push_back(glm::vec3(0.0f, -1.75f, 0.0f));
+
 		render();
 		updateDeltaTime();
 
