@@ -1,6 +1,4 @@
 // Preprocessor Directives
-#ifndef ELEMENT
-#define ELEMENT
 #pragma once
 
 // System Headers
@@ -20,5 +18,3 @@
 // Define Some Constants
 const int mWidth = 1280;
 const int mHeight = 800;
-
-#endif // Element Header

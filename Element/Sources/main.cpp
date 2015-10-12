@@ -1,5 +1,6 @@
 // Local Headers
 #include "element.hpp"
+#include "common.hpp"
 
 // System Headers
 #include <glad/glad.h>
@@ -21,7 +22,6 @@
 #include <cstdlib>
 #include <time.h>
 
-
 // Properties
 GLuint screenWidth = 800, screenHeight = 600;
 
@@ -40,8 +40,29 @@ bool firstMouse = true;
 GLfloat deltaTime = 0.0f;
 GLfloat lastFrame = 0.0f;
 
-void render(){
+// Vertex array objects
+GLuint transparentVAO, transparentVBO;
+
+void physics(){
 	//TODO
+	glm::vec3 planet1Pos = glm::vec3(0.0, 0.1, 0.7);
+	glm::vec3 planet1Vel = glm::vec3(0.3, 0.1, 0.7);
+	//Update these values using bullet
+	std::cout << "first planet" << " (" << planet1Pos.x << "," << planet1Pos.y << "," << planet1Pos.z << ") " << "traveling at speed: " <<
+		"(" << planet1Vel.x << "," << planet1Vel.y << "," << planet1Vel.z << ")" << std::endl;
+}
+
+void setupGrassVAO(){
+	glGenVertexArrays(1, &transparentVAO);
+	glGenBuffers(1, &transparentVBO);
+	glBindVertexArray(transparentVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, transparentVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(transparentVertices), transparentVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glBindVertexArray(0);
 }
 
 void updateDeltaTime(){
@@ -62,7 +83,7 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	glfwWindowHint(GLFW_SAMPLES, 4);
-	auto mWindow = glfwCreateWindow(mWidth, mHeight, "OpenGL", nullptr, nullptr);
+	auto mWindow = glfwCreateWindow(mWidth, mHeight, "Element - OpenGL", nullptr, nullptr);
 
 	// Check for Valid Context
 	if (mWindow == nullptr) {
@@ -103,6 +124,9 @@ int main()
 		if (glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 			glfwSetWindowShouldClose(mWindow, true);
 
+		updateDeltaTime();
+		physics();
+
 		// Background Fill Color
 		glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -132,14 +156,24 @@ int main()
 		model = glm::translate(model, glm::vec3(2.0f, 0.0f, -10.0f));
 		glUniformMatrix4fv(glGetUniformLocation(shader2.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 		nano.Draw(shader2);
+		
+		// Draw grass
+		setupGrassVAO();
 
 		std::vector<glm::vec3> grassVec;
 		grassVec.push_back(glm::vec3(0.0f, -1.75f, 0.0f));
-		grassVec.push_back(glm::vec3(0.0f, -1.75f, 0.0f));
-		grassVec.push_back(glm::vec3(0.0f, -1.75f, 0.0f));
+		grassVec.push_back(glm::vec3(0.0f, -1.75f, -1.0f));
+		grassVec.push_back(glm::vec3(0.0f, -1.75f, -2.0f));
 
-		render();
-		updateDeltaTime();
+		glBindVertexArray(transparentVAO);
+		auto transparentTexture = TextureFromFile("grass.png", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Textures");
+		glBindTexture(GL_TEXTURE_2D, transparentTexture);
+		for (glm::vec3 grassPos : grassVec) {
+			model = glm::mat4();
+			model = glm::translate(model, grassPos);
+			glDrawArrays(GL_TRIANGLES, 0, grassVec.size() * 3);
+		}
+		glBindVertexArray(0);
 
 		// Flip Buffers and Draw
 		glfwSwapBuffers(mWindow);
