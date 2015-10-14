@@ -41,7 +41,9 @@ file(GLOB PROJECT_SOURCES Element/Sources/*.cpp)
 file(GLOB PROJECT_SHADERS Element/Shaders/*.comp
                           Element/Shaders/*.frag
                           Element/Shaders/*.geom
-                          Element/Shaders/*.vert)
+                          Element/Shaders/*.vert
+                          Element/Shaders/*.glf
+                          Element/Shaders/*.glv)
 file(GLOB PROJECT_CONFIGS CMakeLists.txt
                           Readme.md
                          .gitattributes

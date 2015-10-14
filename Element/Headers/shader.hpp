@@ -46,7 +46,7 @@ public:
 			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
 		}
 		const GLchar* vShaderCode = vertexCode.c_str();
-		const GLchar * fShaderCode = fragmentCode.c_str();
+		const GLchar* fShaderCode = fragmentCode.c_str();
 		// 2. Compile shaders
 		GLuint vertex, fragment;
 		GLint success;

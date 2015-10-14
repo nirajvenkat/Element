@@ -48,8 +48,7 @@ void physics(){
 	glm::vec3 planet1Pos = glm::vec3(0.0, 0.1, 0.7);
 	glm::vec3 planet1Vel = glm::vec3(0.3, 0.1, 0.7);
 	//Update these values using bullet
-	std::cout << "first planet" << " (" << planet1Pos.x << "," << planet1Pos.y << "," << planet1Pos.z << ") " << "traveling at speed: " <<
-		"(" << planet1Vel.x << "," << planet1Vel.y << "," << planet1Vel.z << ")" << std::endl;
+	//std::cout << "first planet" << " (" << planet1Pos.x << "," << planet1Pos.y << "," << planet1Pos.z << ") " << "traveling at speed: " << "(" << planet1Vel.x << "," << planet1Vel.y << "," << planet1Vel.z << ")" << std::endl;
 }
 
 void setupGrassVAO(){
@@ -110,11 +109,15 @@ int main()
 	glEnable(GL_MULTISAMPLE);
 
 	// Setup and compile our shaders
-	Shader shader1("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_vert.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_frag.glf");
-	Shader shader2("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_vert.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_frag.glf");
+	Shader defaultShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_vert.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_frag.glf");
+	Shader grassShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_vert.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_frag.glf");
 
 	// Load models
 	Model nano("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Models/Nanosuit/nanosuit.obj");
+
+	// Load textures
+	GLuint transparentTexture = loadTexture("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Textures/grass2.png", false);
+
 
 	// Draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -131,47 +134,58 @@ int main()
 		glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		shader1.Use();   // <-- First nano suit!
+		defaultShader.Use();   // <-- First nano suit!
 		// Transformation matrices
+		glm::mat4 model = glm::mat4();
 		glm::mat4 projection = glm::perspective(camera.Zoom, (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
 		glm::mat4 view = camera.GetViewMatrix();
-		glUniformMatrix4fv(glGetUniformLocation(shader1.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(glGetUniformLocation(shader1.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 
 		// Draw the loaded model
-		glm::mat4 model;
 		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // Translate it down a bit so it's at the center of the scene
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// It's a bit too big for our scene, so scale it down
-		glUniformMatrix4fv(glGetUniformLocation(shader1.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-		nano.Draw(shader1);
+		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		nano.Draw(defaultShader);
 
-		shader2.Use();   // <-- Second nano suit!
+		defaultShader.Use();   // <-- Second nano suit!
 		// Transformation matrices
 		projection = glm::perspective(camera.Zoom, (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
 		view = camera.GetViewMatrix();
-		glUniformMatrix4fv(glGetUniformLocation(shader2.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(glGetUniformLocation(shader2.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 
 		// Draw the loaded model
 		model = glm::translate(model, glm::vec3(2.0f, 0.0f, -10.0f));
-		glUniformMatrix4fv(glGetUniformLocation(shader2.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-		nano.Draw(shader2);
+		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		nano.Draw(defaultShader);
 		
 		// Draw grass
+		grassShader.Use();
+		std::vector<glm::vec3> grassVec;
+		grassVec.push_back(glm::vec3(-1.5f, 0.0f, -0.48f));
+		grassVec.push_back(glm::vec3(1.5f, 0.0f, 0.51f));
+		grassVec.push_back(glm::vec3(0.0f, 0.0f, 0.7f));
+		grassVec.push_back(glm::vec3(-0.3f, 0.0f, -2.3f));
+		grassVec.push_back(glm::vec3(0.5f, 0.0f, -0.6f));
+
 		setupGrassVAO();
 
-		std::vector<glm::vec3> grassVec;
-		grassVec.push_back(glm::vec3(0.0f, -1.75f, 0.0f));
-		grassVec.push_back(glm::vec3(0.0f, -1.75f, -1.0f));
-		grassVec.push_back(glm::vec3(0.0f, -1.75f, -2.0f));
-
 		glBindVertexArray(transparentVAO);
-		auto transparentTexture = TextureFromFile("grass.png", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Textures");
 		glBindTexture(GL_TEXTURE_2D, transparentTexture);
 		for (glm::vec3 grassPos : grassVec) {
 			model = glm::mat4();
 			model = glm::translate(model, grassPos);
-			glDrawArrays(GL_TRIANGLES, 0, grassVec.size() * 3);
+			model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+			glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+			glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+			glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+			for (int i = 0; i < 5; i++){
+				model = glm::rotate(model, 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+				glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+				glDrawArrays(GL_TRIANGLES, 0, 6);
+			}
 		}
 		glBindVertexArray(0);
 
@@ -196,6 +210,10 @@ void Do_Movement()
 		camera.ProcessKeyboard(LEFT, deltaTime);
 	if (keys[GLFW_KEY_D])
 		camera.ProcessKeyboard(RIGHT, deltaTime);
+	if (keys[GLFW_KEY_SPACE])
+		camera.ProcessKeyboard(UP, deltaTime);
+	if (keys[GLFW_KEY_LEFT_SHIFT])
+		camera.ProcessKeyboard(DOWN, deltaTime);
 }
 
 // Is called whenever a key is pressed/released via GLFW
