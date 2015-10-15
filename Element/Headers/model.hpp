@@ -216,7 +216,8 @@ GLuint loadTexture(GLchar* path, GLboolean alpha)
 	GLuint textureID;
 	glGenTextures(1, &textureID);
 	int width, height;
-	unsigned char* image = stbi_load(path, &width, &height, 0, alpha ? STBI_rgb : STBI_rgb_alpha);
+	stbi_set_flip_vertically_on_load(true);
+	unsigned char* image = stbi_load(path, &width, &height, 0, alpha ? STBI_rgb_alpha : STBI_rgb);
 	// Assign texture to ID
 	glBindTexture(GL_TEXTURE_2D, textureID);
 	glTexImage2D(GL_TEXTURE_2D, 0, alpha ? GL_RGBA : GL_RGB, width, height, 0, alpha ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, image);

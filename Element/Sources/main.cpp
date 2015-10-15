@@ -106,7 +106,7 @@ int main()
 
 	// Setup some OpenGL options
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_MULTISAMPLE);
+	//glEnable(GL_MULTISAMPLE);
 
 	// Setup and compile our shaders
 	Shader defaultShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_vert.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_frag.glf");
@@ -116,7 +116,7 @@ int main()
 	Model nano("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Models/Nanosuit/nanosuit.obj");
 
 	// Load textures
-	GLuint transparentTexture = loadTexture("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Textures/grass2.png", false);
+	GLuint transparentTexture = loadTexture("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Textures/grass.png", true);
 
 
 	// Draw in wireframe
@@ -148,7 +148,7 @@ int main()
 		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 		nano.Draw(defaultShader);
 
-		defaultShader.Use();   // <-- Second nano suit!
+		/*defaultShader.Use();   // <-- Second nano suit!
 		// Transformation matrices
 		projection = glm::perspective(camera.Zoom, (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
 		view = camera.GetViewMatrix();
@@ -158,7 +158,7 @@ int main()
 		// Draw the loaded model
 		model = glm::translate(model, glm::vec3(2.0f, 0.0f, -10.0f));
 		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-		nano.Draw(defaultShader);
+		nano.Draw(defaultShader);*/
 		
 		// Draw grass
 		grassShader.Use();
