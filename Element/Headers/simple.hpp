@@ -2,6 +2,8 @@
 
 #include <element.hpp>
 
+// A header containing vertices to draw simple objects
+
 const GLfloat cubeVertices[] = {
 	// Positions         // Texture Coords
 	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,

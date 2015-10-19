@@ -82,11 +82,12 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	glfwWindowHint(GLFW_SAMPLES, 4);
-	glfwWindowHint(GLFW_RED_BITS, 8);
+	// Decide whether to hint to GLFW to use 64 bit
+	/*glfwWindowHint(GLFW_RED_BITS, 8);
 	glfwWindowHint(GLFW_GREEN_BITS, 8);
 	glfwWindowHint(GLFW_BLUE_BITS, 8);
 	glfwWindowHint(GLFW_ALPHA_BITS, 8);
-	glfwWindowHint(GLFW_DEPTH_BITS, 32);
+	glfwWindowHint(GLFW_DEPTH_BITS, 32);*/
 	auto mWindow = glfwCreateWindow(mWidth, mHeight, "Element - OpenGL", nullptr, nullptr);
 
 	// Check for Valid Context

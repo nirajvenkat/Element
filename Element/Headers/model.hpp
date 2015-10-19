@@ -210,10 +210,10 @@ GLint TextureFromFile(const char* path, string directory)
 	return textureID;
 }
 
-GLuint loadTexture(GLchar* path, GLboolean alpha)
+GLint loadTexture(GLchar* path, GLboolean alpha)
 {
 	//Generate texture ID and load texture data 
-	GLuint textureID;
+	GLint textureID;
 	glGenTextures(1, &textureID);
 	int width, height;
 	stbi_set_flip_vertically_on_load(true);
