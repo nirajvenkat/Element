@@ -1,6 +1,6 @@
 // Local Headers
 #include "element.hpp"
-#include "common.hpp"
+#include "simple.hpp"
 
 // System Headers
 #include <glad/glad.h>
@@ -143,27 +143,8 @@ int main()
 
 		// Transformation matrices
 		glm::mat4 model = glm::mat4();
-		glm::mat4 projection = glm::perspective(camera.Zoom, (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
+		glm::mat4 projection = glm::perspective(camera.Zoom, (float)screenWidth / (float)screenHeight, 0.1f, 200.0f);
 		glm::mat4 view = camera.GetViewMatrix();
-
-		/*defaultShader.Use();   // <-- First nano suit!
-		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
-
-		// Draw the loaded model
-		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // Translate it down a bit so it's at the center of the scene
-		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// It's a bit too big for our scene, so scale it down
-		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-		nano.Draw(defaultShader);
-
-		defaultShader.Use();   // <-- Sponza
-		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
-
-		// Draw the loaded model
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// It's a bit too big for our scene, so scale it down
-		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-		sponza.Draw(defaultShader);*/
 
 		grassShader.Use();    // <-- Grass
 		std::vector<glm::vec3> grassVec;
@@ -185,13 +166,33 @@ int main()
 			glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 			glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 			glDrawArrays(GL_TRIANGLES, 0, 6);
-			for (int i = 0; i < 3; i++){
-				model = glm::rotate(model, 60.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+			for (int i = 0; i < 4; i++){
+				model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));
+				model = glm::rotate(model, 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 				glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 				glDrawArrays(GL_TRIANGLES, 0, 6);
 			}
 		}
 		glBindVertexArray(0);
+
+		/*defaultShader.Use();   // <-- First nano suit!
+		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+
+		// Draw the loaded model
+		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // Translate it down a bit so it's at the center of the scene
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// It's a bit too big for our scene, so scale it down
+		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		nano.Draw(defaultShader);
+		
+		defaultShader.Use();   // <-- Sponza
+		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+
+		// Draw the loaded model
+		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// It's a bit too big for our scene, so scale it down
+		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		sponza.Draw(defaultShader);*/
 
 		// Flip Buffers and Draw
 		glfwSwapBuffers(mWindow);

@@ -76,7 +76,7 @@ public:
 	void ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime)
 	{
 		GLfloat velocity = this->MovementSpeed * deltaTime;
-		velocity /= 500.0;
+		velocity /= 200.0;
 		if (direction == FORWARD)
 			this->Position += this->Front * velocity;
 		if (direction == BACKWARD)
