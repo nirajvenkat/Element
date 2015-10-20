@@ -8,13 +8,21 @@ out vec2 TexCoords;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
-uniform 
 
-void main()
-{
-	vec4 worldSpacePos = model * vec4(position, 1.0f);
+uniform vec3 windDirection;
+uniform float windIntensity;
+uniform float time;
+
+void main() {
+	vec3 translatedPos = position;
+
+	// Vertex animation
+	if(texCoords.y > 0.9f) {
+		vec3 worldSpacePos = position;
+		translatedPos = worldSpacePos + (normalize(windDirection) * windIntensity * sin(time) * 0.1);
+	}
 
 	// Output
-    gl_Position = projection * view * model * vec4(position, 1.0f);
+    gl_Position = projection * view * model * vec4(translatedPos, 1.0f);
     TexCoords = texCoords;
 }

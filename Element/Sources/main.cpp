@@ -37,8 +37,8 @@ bool keys[1024];
 GLfloat lastX = 400, lastY = 300;
 bool firstMouse = true;
 
-GLfloat deltaTime = 0.0f;
-GLfloat lastFrame = 0.0f;
+GLuint deltaTime = 0;
+GLuint lastFrame = 0;
 
 // Vertex array objects
 GLuint transparentVAO, transparentVBO;
@@ -65,8 +65,8 @@ void setupGrassVAO(){
 }
 
 void updateDeltaTime(){
-	GLfloat currentFrame = clock();
-	if (lastFrame == 0.0f) deltaTime = 20.0f;
+	GLuint currentFrame = clock();
+	if (lastFrame == 0) deltaTime = 20;
 	else deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
 }
@@ -125,7 +125,6 @@ int main()
 	// Load textures
 	GLuint transparentTexture = loadTexture("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Textures/grass.png", true);
 
-
 	// Draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -154,6 +153,7 @@ int main()
 		grassVec.push_back(glm::vec3(-0.3f, 0.0f, -2.3f));
 		grassVec.push_back(glm::vec3(0.5f, 0.0f, -0.6f));
 
+
 		setupGrassVAO();
 
 		glBindVertexArray(transparentVAO);
@@ -165,6 +165,9 @@ int main()
 			glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 			glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 			glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+			glUniform3f(glGetUniformLocation(grassShader.Program, "windDirection"), 0.0f, 0.0f, 1.0f);
+			glUniform1f(glGetUniformLocation(grassShader.Program, "windIntensity"), 1.0f);
+			glUniform1f(glGetUniformLocation(grassShader.Program, "time"), clock());
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 			for (int i = 0; i < 4; i++){
 				model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));

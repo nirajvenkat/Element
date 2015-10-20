@@ -6,7 +6,7 @@ Based off [Polytonic/Glitter](http://polytonic.github.io/Glitter/), a bare minim
 
 ## Grass
 
-Simple vertex shader animated grass patches
+Windy grass patches animated on vertex shader
 
 ![Alt text](http://i.imgur.com/En8nQHB.gif "Grass preview")
 
