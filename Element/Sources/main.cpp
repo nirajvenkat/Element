@@ -71,6 +71,11 @@ void updateDeltaTime(){
 	lastFrame = currentFrame;
 }
 
+void updateWindIntensity(GLfloat* windSpeed) {
+	if (*windSpeed >= 1.0f) *windSpeed = 0.0f;
+	*windSpeed += 0.05f;
+}
+
 // The MAIN function, from here we start our application and run our Game loop
 int main()
 {
@@ -88,8 +93,10 @@ int main()
 	glfwWindowHint(GLFW_BLUE_BITS, 8);
 	glfwWindowHint(GLFW_ALPHA_BITS, 8);
 	glfwWindowHint(GLFW_DEPTH_BITS, 32);*/
-	auto mWindow = glfwCreateWindow(mWidth, mHeight, "Element - OpenGL", nullptr, nullptr);
-
+	auto primaryMonitor = glfwGetPrimaryMonitor();
+	primaryMonitor = nullptr;
+	auto mWindow = glfwCreateWindow(mWidth, mHeight, "Element - OpenGL", primaryMonitor, nullptr);
+	
 	// Check for Valid Context
 	if (mWindow == nullptr) {
 		fprintf(stderr, "Failed to Create OpenGL Context");
@@ -119,7 +126,7 @@ int main()
 	Shader grassShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glf");
 
 	// Load models
-	//Model nano("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Models/Nanosuit/nanosuit.obj");
+	Model nano("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Models/Nanosuit/nanosuit.obj");
 	//Model sponza("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Models/Sponza/SponzaNoFlag.obj");
 
 	// Load textures
@@ -127,6 +134,9 @@ int main()
 
 	// Draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	// Vars
+	GLfloat windIntensity = 1.0f;
 
 	// Rendering Loop
 	while (glfwWindowShouldClose(mWindow) == false) {
@@ -153,8 +163,8 @@ int main()
 		grassVec.push_back(glm::vec3(-0.3f, 0.0f, -2.3f));
 		grassVec.push_back(glm::vec3(0.5f, 0.0f, -0.6f));
 
-
 		setupGrassVAO();
+		updateWindIntensity(&windIntensity);
 
 		glBindVertexArray(transparentVAO);
 		glBindTexture(GL_TEXTURE_2D, transparentTexture);
@@ -166,7 +176,7 @@ int main()
 			glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 			glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 			glUniform3f(glGetUniformLocation(grassShader.Program, "windDirection"), 0.0f, 0.0f, 1.0f);
-			glUniform1f(glGetUniformLocation(grassShader.Program, "windIntensity"), 1.0f);
+			glUniform1f(glGetUniformLocation(grassShader.Program, "windIntensity"), windIntensity);
 			glUniform1f(glGetUniformLocation(grassShader.Program, "time"), clock());
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 			for (int i = 0; i < 4; i++){
@@ -177,8 +187,8 @@ int main()
 			}
 		}
 		glBindVertexArray(0);
-
-		/*defaultShader.Use();   // <-- First nano suit!
+		/*
+		defaultShader.Use();   // <-- First nano suit!
 		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 
