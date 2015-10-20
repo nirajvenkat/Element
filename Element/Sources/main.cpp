@@ -24,6 +24,8 @@
 
 // Properties
 GLuint screenWidth = 800, screenHeight = 600;
+bool ALLOW_FULLSCREEN = false;
+bool DRAW_MODELS = false;
 
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -93,8 +95,9 @@ int main()
 	glfwWindowHint(GLFW_BLUE_BITS, 8);
 	glfwWindowHint(GLFW_ALPHA_BITS, 8);
 	glfwWindowHint(GLFW_DEPTH_BITS, 32);*/
+
 	auto primaryMonitor = glfwGetPrimaryMonitor();
-	primaryMonitor = nullptr;
+	if (!ALLOW_FULLSCREEN) primaryMonitor = nullptr;
 	auto mWindow = glfwCreateWindow(mWidth, mHeight, "Element - OpenGL", primaryMonitor, nullptr);
 	
 	// Check for Valid Context
@@ -164,7 +167,7 @@ int main()
 		grassVec.push_back(glm::vec3(0.5f, 0.0f, -0.6f));
 
 		setupGrassVAO();
-		updateWindIntensity(&windIntensity);
+		//updateWindIntensity(&windIntensity);
 
 		glBindVertexArray(transparentVAO);
 		glBindTexture(GL_TEXTURE_2D, transparentTexture);
@@ -187,25 +190,27 @@ int main()
 			}
 		}
 		glBindVertexArray(0);
-		/*
-		defaultShader.Use();   // <-- First nano suit!
-		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 
-		// Draw the loaded model
-		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // Translate it down a bit so it's at the center of the scene
-		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// It's a bit too big for our scene, so scale it down
-		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-		nano.Draw(defaultShader);
-		
-		defaultShader.Use();   // <-- Sponza
-		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+		if (DRAW_MODELS){
+			defaultShader.Use();   // <-- First nano suit!
+			glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+			glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 
-		// Draw the loaded model
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// It's a bit too big for our scene, so scale it down
-		glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-		sponza.Draw(defaultShader);*/
+			// Draw the loaded model
+			model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // Translate it down a bit so it's at the center of the scene
+			model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// It's a bit too big for our scene, so scale it down
+			glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+			nano.Draw(defaultShader);
+
+			defaultShader.Use();   // <-- Sponza
+			glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+			glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+
+			// Draw the loaded model
+			model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// It's a bit too big for our scene, so scale it down
+			glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+			sponza.Draw(defaultShader);
+		}
 
 		// Flip Buffers and Draw
 		glfwSwapBuffers(mWindow);
