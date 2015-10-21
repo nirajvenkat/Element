@@ -1,31 +1,22 @@
-// Local Headers
-#include "element.hpp"
-#include "simple.hpp"
+// Application header
+#include <element.h>
 
-// System Headers
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+// Local headers
+#include <mesh.h>
+#include <model.h>
+#include <shader.h>
+#include <camera.h>
+#include <grass.h>
 
-// GL includes
-#include "mesh.hpp"
-#include "model.hpp"
-#include "shader.hpp"
-#include "camera.hpp"
-
-// GLM Mathemtics
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-// Standard Headers
+// Standard headers
 #include <cstdio>
 #include <cstdlib>
-#include <time.h>
+#include <chrono>
+#include <ctime>
 
 // Properties
-GLuint screenWidth = 800, screenHeight = 600;
 bool ALLOW_FULLSCREEN = false;
-bool DRAW_MODELS = false;
+bool DRAW_MODELS = true;
 
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -58,7 +49,7 @@ void setupGrassVAO(){
 	glGenBuffers(1, &transparentVBO);
 	glBindVertexArray(transparentVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, transparentVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(transparentVertices), transparentVertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(1);
@@ -67,7 +58,7 @@ void setupGrassVAO(){
 }
 
 void updateDeltaTime(){
-	GLuint currentFrame = clock();
+	GLuint currentFrame = std::chrono::high_resolution_clock::now().time_since_epoch().count();
 	if (lastFrame == 0) deltaTime = 20;
 	else deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
@@ -140,56 +131,31 @@ int main()
 
 	// Vars
 	GLfloat windIntensity = 1.0f;
+	Grass grass(windIntensity);
+	grass.assemblePatches();
 
 	// Rendering Loop
 	while (glfwWindowShouldClose(mWindow) == false) {
 		if (glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 			glfwSetWindowShouldClose(mWindow, true);
 
+		// Updates
 		updateDeltaTime();
+		grass.updateWindIntensity();
 		physics();
 
 		// Background Fill Color
 		glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		grassShader.Use();    // <-- Grass
+		grass.setup();
+		grass.drawPatches(camera, grassShader);
+
 		// Transformation matrices
 		glm::mat4 model = glm::mat4();
-		glm::mat4 projection = glm::perspective(camera.Zoom, (float)screenWidth / (float)screenHeight, 0.1f, 200.0f);
+		glm::mat4 projection = glm::perspective(camera.Zoom, 800.0f / 600.0f, 0.1f, 200.0f);
 		glm::mat4 view = camera.GetViewMatrix();
-
-		grassShader.Use();    // <-- Grass
-		std::vector<glm::vec3> grassVec;
-		grassVec.push_back(glm::vec3(-1.5f, 0.0f, -0.48f));
-		grassVec.push_back(glm::vec3(1.5f, 0.0f, 0.51f));
-		grassVec.push_back(glm::vec3(0.0f, 0.0f, 0.7f));
-		grassVec.push_back(glm::vec3(-0.3f, 0.0f, -2.3f));
-		grassVec.push_back(glm::vec3(0.5f, 0.0f, -0.6f));
-
-		setupGrassVAO();
-		//updateWindIntensity(&windIntensity);
-
-		glBindVertexArray(transparentVAO);
-		glBindTexture(GL_TEXTURE_2D, transparentTexture);
-		for (glm::vec3 grassPos : grassVec) {
-			model = glm::mat4();
-			model = glm::translate(model, grassPos);
-			model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-			glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-			glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-			glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
-			glUniform3f(glGetUniformLocation(grassShader.Program, "windDirection"), 0.0f, 0.0f, 1.0f);
-			glUniform1f(glGetUniformLocation(grassShader.Program, "windIntensity"), windIntensity);
-			glUniform1f(glGetUniformLocation(grassShader.Program, "time"), clock());
-			glDrawArrays(GL_TRIANGLES, 0, 6);
-			for (int i = 0; i < 4; i++){
-				model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));
-				model = glm::rotate(model, 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-				glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-				glDrawArrays(GL_TRIANGLES, 0, 6);
-			}
-		}
-		glBindVertexArray(0);
 
 		if (DRAW_MODELS){
 			defaultShader.Use();   // <-- First nano suit!
@@ -209,7 +175,7 @@ int main()
 			// Draw the loaded model
 			model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// It's a bit too big for our scene, so scale it down
 			glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-			sponza.Draw(defaultShader);
+			//sponza.Draw(defaultShader);
 		}
 
 		// Flip Buffers and Draw

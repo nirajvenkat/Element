@@ -25,7 +25,7 @@ enum Camera_Movement {
 const GLfloat YAW = -90.0f;
 const GLfloat PITCH = 0.0f;
 const GLfloat SPEED = 3.0f;
-const GLfloat SENSITIVTY = 0.25f;
+const GLfloat SENSITIVTY = 0.75f;
 const GLfloat ZOOM = 45.0f;
 
 
@@ -76,7 +76,7 @@ public:
 	void ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime)
 	{
 		GLfloat velocity = this->MovementSpeed * deltaTime;
-		velocity /= 200.0;
+		velocity /= 2000000.0;
 		if (direction == FORWARD)
 			this->Position += this->Front * velocity;
 		if (direction == BACKWARD)

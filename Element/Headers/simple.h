@@ -1,8 +1,8 @@
 #pragma once
 
-#include <element.hpp>
-
 // A header containing vertices to draw simple objects
+
+#include <glad/glad.h>
 
 const GLfloat cubeVertices[] = {
 	// Positions         // Texture Coords
@@ -60,7 +60,7 @@ const GLfloat planeVertices[] = {
 	5.0f, -0.5f, -5.0f, 2.0f, 2.0f
 };
 
-const GLfloat transparentVertices[] = {
+const GLfloat quadVertices[] = {
 	// Positions      // Texture Coords (swapped y coordinates because texture is flipped upside down)
 	0.0f, 0.5f, 0.0f, 0.0f, 1.0f,
 	0.0f, -0.5f, 0.0f, 0.0f, 0.0f,

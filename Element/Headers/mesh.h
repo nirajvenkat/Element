@@ -13,7 +13,7 @@ using namespace std;
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "shader.hpp"
+#include <shader.h>
 
 struct Vertex {
 	// Position
