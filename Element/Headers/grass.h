@@ -8,13 +8,14 @@
 
 class Grass {
 public:
-	Grass(GLfloat windIntensity);
+	Grass(GLuint textureID, GLfloat windIntensity);
 	void setup();
 	void updateWindIntensity();
 	void assemblePatches();
 	void drawPatches(Camera& camera, Shader& grassShader);
 
 private:
+	GLuint textureID;
 	GLuint grassVAO, grassVBO;
 	std::vector<glm::vec3> patchPositions;
 	GLfloat windIntensity;

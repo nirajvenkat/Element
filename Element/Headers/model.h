@@ -21,7 +21,7 @@
 
 using namespace std;
 
-GLuint loadTexture(GLchar* path, GLboolean alpha);
+GLuint loadTexture(GLchar* path, GLboolean alpha, GLboolean flip = false);
 
 class Model
 {
@@ -190,13 +190,13 @@ private:
 };
 
 
-GLuint loadTexture(GLchar* path, GLboolean alpha)
+GLuint loadTexture(GLchar* path, GLboolean alpha, GLboolean flip)
 {
 	//Generate texture ID and load texture data 
 	GLuint textureID;
 	glGenTextures(1, &textureID);
 	int width, height;
-	//stbi_set_flip_vertically_on_load(true);
+	stbi_set_flip_vertically_on_load(flip);
 	unsigned char* image = stbi_load(path, &width, &height, 0, alpha ? STBI_rgb_alpha : STBI_rgb);
 	// Assign texture to ID
 	glBindTexture(GL_TEXTURE_2D, textureID);

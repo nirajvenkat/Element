@@ -8,5 +8,5 @@ uniform sampler2D texture_diffuse1;
 
 void main()
 {    
-    color = vec4(vec3(texture(texture_diffuse1, TexCoords)), 1.0);
+    color = vec4(texture(texture_diffuse1, TexCoords).rgb, 1.0);
 }

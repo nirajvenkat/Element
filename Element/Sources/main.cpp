@@ -44,29 +44,11 @@ void physics(){
 	//std::cout << "first planet" << " (" << planet1Pos.x << "," << planet1Pos.y << "," << planet1Pos.z << ") " << "traveling at speed: " << "(" << planet1Vel.x << "," << planet1Vel.y << "," << planet1Vel.z << ")" << std::endl;
 }
 
-void setupGrassVAO(){
-	glGenVertexArrays(1, &transparentVAO);
-	glGenBuffers(1, &transparentVBO);
-	glBindVertexArray(transparentVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, transparentVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-	glBindVertexArray(0);
-}
-
 void updateDeltaTime(){
 	GLuint currentFrame = std::chrono::high_resolution_clock::now().time_since_epoch().count();
 	if (lastFrame == 0) deltaTime = 20;
 	else deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
-}
-
-void updateWindIntensity(GLfloat* windSpeed) {
-	if (*windSpeed >= 1.0f) *windSpeed = 0.0f;
-	*windSpeed += 0.05f;
 }
 
 // The MAIN function, from here we start our application and run our Game loop
@@ -124,14 +106,14 @@ int main()
 	//Model sponza("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Models/Sponza/SponzaNoFlag.obj");
 
 	// Load textures
-	GLuint transparentTexture = loadTexture("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Textures/grass.png", true);
+	GLuint grassTexture = loadTexture("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Textures/grass.png", true, true);
 
 	// Draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	// Vars
 	GLfloat windIntensity = 1.0f;
-	Grass grass(windIntensity);
+	Grass grass(grassTexture, windIntensity);
 	grass.assemblePatches();
 
 	// Rendering Loop

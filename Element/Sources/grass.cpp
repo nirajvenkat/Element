@@ -12,7 +12,8 @@
 
 #include <simple.h>
 
-Grass::Grass(GLfloat windIntensity = 0.0f){
+Grass::Grass(GLuint textureID, GLfloat windIntensity = 0.0f){
+	this->textureID = textureID;
 	this->windIntensity = windIntensity;
 }
 
@@ -44,7 +45,7 @@ void Grass::updateWindIntensity() {
 
 void Grass::drawPatches(Camera& camera, Shader& grassShader){
 	glBindVertexArray(grassVAO);
-	glBindTexture(GL_TEXTURE_2D, grassVBO);
+	glBindTexture(GL_TEXTURE_2D, textureID);
 	for (glm::vec3 pos : patchPositions) {
 		glm::mat4 model = glm::mat4();
 		model = glm::translate(model, pos);
@@ -58,6 +59,7 @@ void Grass::drawPatches(Camera& camera, Shader& grassShader){
 		glUniform3f(glGetUniformLocation(grassShader.Program, "windDirection"), 0.0f, 0.0f, 1.0f);
 		glUniform1f(glGetUniformLocation(grassShader.Program, "windIntensity"), windIntensity);
 		glUniform1f(glGetUniformLocation(grassShader.Program, "time"), std::chrono::high_resolution_clock::now().time_since_epoch().count());
+		//glUniform1i(glGetUniformLocation(grassShader.Program, "texture_diffuse1"), textureID);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		for (int i = 0; i < 4; i++){
 			model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));
