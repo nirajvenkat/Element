@@ -59,7 +59,6 @@ void Grass::drawPatches(Camera& camera, Shader& grassShader){
 		glUniform3f(glGetUniformLocation(grassShader.Program, "windDirection"), 0.0f, 0.0f, 1.0f);
 		glUniform1f(glGetUniformLocation(grassShader.Program, "windIntensity"), windIntensity);
 		glUniform1f(glGetUniformLocation(grassShader.Program, "time"), std::chrono::high_resolution_clock::now().time_since_epoch().count());
-		//glUniform1i(glGetUniformLocation(grassShader.Program, "texture_diffuse1"), textureID);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		for (int i = 0; i < 4; i++){
 			model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));
