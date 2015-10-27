@@ -7,14 +7,18 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform vec3 windDirection;
+uniform float windIntensity;
+uniform float time;
+
 void build_leaf(vec4 position) {    
-    gl_Position = projection * view * model * (position + vec4(-0.2f, -0.2f, 0.0f, 0.0f));    // 1:bottom-left
+    gl_Position = projection * view * model * (position + vec4(-0.1f, -0.2f, 0.0f, 0.0f));    // 1:bottom-left
     EmitVertex();   
-    gl_Position = projection * view * model * (position + vec4( 0.2f, -0.2f, 0.0f, 0.0f));    // 2:bottom-right
+    gl_Position = projection * view * model * (position + vec4( 0.1f, -0.2f, 0.0f, 0.0f));    // 2:bottom-right
     EmitVertex();
-    gl_Position = projection * view * model * (position + vec4(-0.2f,  0.2f, 0.0f, 0.0f));    // 3:top-left
+    gl_Position = projection * view * model * (position + vec4(-0.1f,  0.2f, 0.0f, 0.0f));    // 3:top-left
     EmitVertex();
-    gl_Position = projection * view * model * (position + vec4( 0.2f,  0.2f, 0.0f, 0.0f));    // 4:top-right
+    gl_Position = projection * view * model * (position + vec4( 0.1f,  0.2f, 0.0f, 0.0f));    // 4:top-right
     EmitVertex();
     gl_Position = projection * view * model * (position + vec4( 0.0f,  0.4f, 0.4f, 0.0f));    // 5:top
     EmitVertex();

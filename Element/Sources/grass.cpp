@@ -43,8 +43,6 @@ void Grass::updateWindIntensity() {
 
 void Grass::drawPatches(Camera& camera, Shader& grassShader){
 	glBindVertexArray(grassVAO);
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, textureID);
 	for (glm::vec3 pos : patchPositions) {
 		glm::mat4 model = glm::mat4();
 		model = glm::translate(model, pos);
@@ -60,6 +58,5 @@ void Grass::drawPatches(Camera& camera, Shader& grassShader){
 		glUniform1f(glGetUniformLocation(grassShader.Program, "time"), std::chrono::high_resolution_clock::now().time_since_epoch().count());
 		glDrawArrays(GL_POINTS, 0, 1);
 	}
-	//glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
 }

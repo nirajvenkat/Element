@@ -140,9 +140,6 @@ int main()
 		glm::mat4 projection = glm::perspective(camera.Zoom, 800.0f / 600.0f, 0.1f, 200.0f);
 		glm::mat4 view = camera.GetViewMatrix();
 
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
-
 		if (DRAW_MODELS){
 			defaultShader.Use();   // <-- First nano suit!
 			glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
