@@ -33,15 +33,13 @@ bool firstMouse = true;
 GLuint deltaTime = 0;
 GLuint lastFrame = 0;
 
-// Vertex array objects
-GLuint transparentVAO, transparentVBO;
 
 void physics(){
 	//TODO
 	glm::vec3 planet1Pos = glm::vec3(0.0, 0.1, 0.7);
 	glm::vec3 planet1Vel = glm::vec3(0.3, 0.1, 0.7);
 	//Update these values using bullet
-	//std::cout << "first planet" << " (" << planet1Pos.x << "," << planet1Pos.y << "," << planet1Pos.z << ") " << "traveling at speed: " << "(" << planet1Vel.x << "," << planet1Vel.y << "," << planet1Vel.z << ")" << std::endl;
+	std::cout << "first planet" << " (" << planet1Pos.x << "," << planet1Pos.y << "," << planet1Pos.z << ") " << "traveling at speed: " << "(" << planet1Vel.x << "," << planet1Vel.y << "," << planet1Vel.z << ")" << std::endl;
 }
 
 void updateDeltaTime(){
@@ -101,14 +99,15 @@ int main()
 
 	// Setup and compile our shaders
 	Shader defaultShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_vert.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_frag.glf");
-	Shader grassShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_frag.glf");
+	//Shader grassShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glf", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glg");
+	Shader grassShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glf");
 
 	// Load models
 	Model nano("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Models/Nanosuit/nanosuit.obj");
-	Model sponza("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Models/Sponza/SponzaNoFlag.obj");
+	//Model sponza("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Models/Sponza/SponzaNoFlag.obj");
 
 	// Load textures
-	GLuint grassTexture = loadTexture("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Textures/grass3.jpg", true, true);
+	GLuint grassTexture = loadTexture("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Textures/grass.png", true, true);
 
 	// Draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -159,7 +158,7 @@ int main()
 			// Draw the loaded model
 			model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// It's a bit too big for our scene, so scale it down
 			glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-			sponza.Draw(defaultShader);
+			//sponza.Draw(defaultShader);
 		}
 
 		// Flip Buffers and Draw

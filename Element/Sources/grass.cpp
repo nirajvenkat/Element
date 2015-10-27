@@ -45,6 +45,7 @@ void Grass::updateWindIntensity() {
 
 void Grass::drawPatches(Camera& camera, Shader& grassShader){
 	glBindVertexArray(grassVAO);
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 	for (glm::vec3 pos : patchPositions) {
 		glm::mat4 model = glm::mat4();
@@ -67,5 +68,6 @@ void Grass::drawPatches(Camera& camera, Shader& grassShader){
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 		}
 	}
+	//glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
 }
