@@ -93,14 +93,14 @@ int main()
 
 	// Setup some OpenGL options
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
 	glEnable(GL_MULTISAMPLE);
 
 	// Setup and compile our shaders
 	Shader defaultShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_vert.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_frag.glf");
-	//Shader grassShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glf", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glg");
-	Shader grassShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glf");
+	Shader grassShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glf", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glg");
+	//Shader defaultGeomShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_vert.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_frag.glf", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_geom.glg");
 
 	// Load models
 	Model nano("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Models/Nanosuit/nanosuit.obj");
@@ -126,7 +126,7 @@ int main()
 		// Updates
 		updateDeltaTime();
 		grass.updateWindIntensity();
-		physics();
+		//physics();
 
 		// Background Fill Color
 		glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
@@ -139,6 +139,9 @@ int main()
 		glm::mat4 model = glm::mat4();
 		glm::mat4 projection = glm::perspective(camera.Zoom, 800.0f / 600.0f, 0.1f, 200.0f);
 		glm::mat4 view = camera.GetViewMatrix();
+
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
 
 		if (DRAW_MODELS){
 			defaultShader.Use();   // <-- First nano suit!

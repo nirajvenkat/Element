@@ -22,11 +22,9 @@ void Grass::setup(){
 	glGenBuffers(1, &grassVBO);
 	glBindVertexArray(grassVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, grassVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(point), point, GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 	glBindVertexArray(0);
 }
 
@@ -45,12 +43,12 @@ void Grass::updateWindIntensity() {
 
 void Grass::drawPatches(Camera& camera, Shader& grassShader){
 	glBindVertexArray(grassVAO);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, textureID);
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, textureID);
 	for (glm::vec3 pos : patchPositions) {
 		glm::mat4 model = glm::mat4();
 		model = glm::translate(model, pos);
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		//model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		glm::mat4 projection = glm::perspective(45.0f, 800.0f / 600.0f, 0.1f, 200.0f);
 		glm::mat4 view = camera.GetViewMatrix();
 
@@ -60,13 +58,7 @@ void Grass::drawPatches(Camera& camera, Shader& grassShader){
 		glUniform3f(glGetUniformLocation(grassShader.Program, "windDirection"), 0.0f, 0.0f, 1.0f);
 		glUniform1f(glGetUniformLocation(grassShader.Program, "windIntensity"), windIntensity);
 		glUniform1f(glGetUniformLocation(grassShader.Program, "time"), std::chrono::high_resolution_clock::now().time_since_epoch().count());
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		for (int i = 0; i < 4; i++){
-			model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));
-			model = glm::rotate(model, 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-			glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-			glDrawArrays(GL_TRIANGLES, 0, 6);
-		}
+		glDrawArrays(GL_POINTS, 0, 1);
 	}
 	//glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
