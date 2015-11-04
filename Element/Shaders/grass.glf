@@ -12,7 +12,7 @@ void main() {
     //color = texColor;
 	
 	vec3 black = vec3(0.0, 0.0, 0.0);
-	vec3 green = vec3(0.0, 1.0, 0.0);
+	vec3 green = vec3(0.0, 0.7, 0.0);
 	//vec3 fcolor = mix(black, green, TexCoords.y);
 	color = vec4(green, 1.0);
 }

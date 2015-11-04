@@ -4,6 +4,8 @@
 
 #include <chrono>
 #include <ctime>
+#include <cstdio>
+#include <cstdlib>
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
@@ -29,11 +31,20 @@ void Grass::setup(){
 }
 
 void Grass::assemblePatches(){
-	patchPositions.push_back(glm::vec3(-1.5f, 0.0f, -0.48f));
-	patchPositions.push_back(glm::vec3(1.5f, 0.0f, 0.51f));
-	patchPositions.push_back(glm::vec3(0.0f, 0.0f, 0.7f));
-	patchPositions.push_back(glm::vec3(-0.3f, 0.0f, -2.3f));
-	patchPositions.push_back(glm::vec3(0.5f, 0.0f, -0.6f));
+	// Seed random generator
+	srand((unsigned)time(NULL));
+
+	for (float x = -20; x < 20; x++) {
+		for (float z = -2; z < 5; z++) {
+			for (float i = 0; i < 5; i++) {
+				// Float between 0 and 1
+				float randomx = (float)rand() / RAND_MAX;
+				float randomz = (float)rand() / RAND_MAX;
+
+				patchPositions.push_back(glm::vec3(x + randomx, -1.75f, -z + randomz));
+			}
+		}
+	}
 }
 
 void Grass::updateWindIntensity() {
