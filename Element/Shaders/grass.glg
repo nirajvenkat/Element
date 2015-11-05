@@ -3,6 +3,10 @@
 layout (lines) in;
 layout (triangle_strip, max_vertices = 4) out;
 
+//in float distFactorTES[];
+
+//out float distFactorGS;
+
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
@@ -28,4 +32,6 @@ void main() {
 	vec4 modelSpaceTopPos = inverse(projection * view * model) * gl_in[1].gl_Position;
 
     build_blade(modelSpaceBasePos, modelSpaceTopPos);
+
+	//distFactorGS = distFactorTES;
 }  

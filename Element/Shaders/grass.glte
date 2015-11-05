@@ -1,6 +1,10 @@
-#version 400
+#version 400 core
 
 layout(isolines, equal_spacing) in;
+
+//in float distFactorTCS[];
+
+//out float distFactorTES[];
 
 void main() {
 	vec4 p0 = gl_in[0].gl_Position;
@@ -8,10 +12,11 @@ void main() {
 	vec4 p2 = gl_in[2].gl_Position;
 	float u = gl_TessCoord.x;
 
-	// The basis functions:
+	// The basis functions for a quadratic Bezier curve:
 	float b0 = (1.0-u) * (1.0-u);
 	float b1 = 2.0 * (1.0-u) * u;
 	float b2 = u * u;
 
 	gl_Position = b0*p0 + b1*p1 + b2*p2;
+	//distFactorTES = distFactorTCS;
 }
