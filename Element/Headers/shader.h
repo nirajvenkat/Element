@@ -15,24 +15,38 @@ class Shader
 public:
 	GLuint Program;
 	// Constructor generates the shader on the fly
-	Shader(const GLchar* vertexPath, const GLchar* fragmentPath, const GLchar* geometryPath = nullptr)
+	Shader(const GLchar* vertexPath, const GLchar* fragmentPath, const GLchar* geometryPath = nullptr, const GLchar* tessControlPath = nullptr, const GLchar* tessEvalPath = nullptr)
 	{
-
+		// Detects if geometry shader in use
 		bool geomActive = true;
 		if (!geometryPath) geomActive = false;
+
+		// Detects if tesselation shaders in use
+		bool tessControlActive = true;
+		if (!tessControlPath) tessControlActive = false;
+		bool tessEvalActive = true;
+		if (!tessEvalPath) tessEvalActive = false;
+
 
 		// 1. Retrieve the vertex/fragment source code from filePath
 		std::string vertexCode;
 		std::string fragmentCode;
 		std::string geometryCode;
+		std::string tessControlCode;
+		std::string tessEvalCode;
 		std::ifstream vShaderFile;
 		std::ifstream fShaderFile;
 		std::ifstream gShaderFile;
+		std::ifstream tcShaderFile;
+		std::ifstream teShaderFile;
 
 		// ensures ifstream objects can throw exceptions:
 		vShaderFile.exceptions(std::ifstream::badbit);
 		fShaderFile.exceptions(std::ifstream::badbit);
 		gShaderFile.exceptions(std::ifstream::badbit);
+		tcShaderFile.exceptions(std::ifstream::badbit);
+		teShaderFile.exceptions(std::ifstream::badbit);
+
 
 		try
 		{
@@ -52,7 +66,7 @@ public:
 		}
 		catch (std::ifstream::failure e)
 		{
-			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+			std::cout << "ERROR::SHADER::VERTEX_FRAGMENT_SHADERS_NOT_SUCCESFULLY_READ" << std::endl;
 		}
 		if (geomActive) {
 			try
@@ -72,12 +86,38 @@ public:
 				std::cout << "ERROR::SHADER::GEOMETRY_SHADER_NOT_SUCCESFULLY_READ" << std::endl;
 			}
 		}
+		if (tessControlActive && tessEvalActive) {
+			try
+			{
+				// Open files
+				tcShaderFile.open(tessControlPath);
+				teShaderFile.open(tessEvalPath);
+				std::stringstream tcShaderStream;
+				std::stringstream teShaderStream;
+				// Read file's buffer contents into streams
+				tcShaderStream << tcShaderFile.rdbuf();
+				teShaderStream << teShaderFile.rdbuf();
+				// close file handlers
+				tcShaderFile.close();
+				teShaderFile.close();
+				// Convert stream into string
+				tessControlCode = tcShaderStream.str();
+				tessEvalCode = teShaderStream.str();
+			}
+			catch (std::ifstream::failure e)
+			{
+				std::cout << "ERROR::SHADER::TESSELATION_SHADERS_NOT_SUCCESFULLY_READ" << std::endl;
+			}
+		}
 		const GLchar* vShaderCode = vertexCode.c_str();
 		const GLchar* fShaderCode = fragmentCode.c_str();
 		const GLchar* gShaderCode = geometryCode.c_str();
+		const GLchar* tcShaderCode = tessControlCode.c_str();
+		const GLchar* teShaderCode = tessEvalCode.c_str();
+
 
 		// 2. Compile shaders
-		GLuint vertex, fragment, geometry;
+		GLuint vertex, fragment, geometry, tessControl, tessEval;
 		GLint success;
 		GLchar infoLog[512];
 		// Vertex Shader
@@ -115,6 +155,29 @@ public:
 				std::cout << "ERROR::SHADER::GEOMETRY::COMPILATION_FAILED\n" << infoLog << std::endl;
 			}
 		}
+		// Tesselation Shaders
+		if (tessControlActive && tessEvalActive) {
+			tessControl = glCreateShader(GL_TESS_CONTROL_SHADER);
+			glShaderSource(tessControl, 1, &tcShaderCode, NULL);
+			glCompileShader(tessControl);
+			// Print compile errors if any
+			glGetShaderiv(tessControl, GL_COMPILE_STATUS, &success);
+			if (!success)
+			{
+				glGetShaderInfoLog(tessControl, 512, NULL, infoLog);
+				std::cout << "ERROR::SHADER::TESS_CONTROL::COMPILATION_FAILED\n" << infoLog << std::endl;
+			}
+			tessEval = glCreateShader(GL_TESS_EVALUATION_SHADER);
+			glShaderSource(tessEval, 1, &teShaderCode, NULL);
+			glCompileShader(tessEval);
+			// Print compile errors if any
+			glGetShaderiv(tessEval, GL_COMPILE_STATUS, &success);
+			if (!success)
+			{
+				glGetShaderInfoLog(tessEval, 512, NULL, infoLog);
+				std::cout << "ERROR::SHADER::TESS_EVAL::COMPILATION_FAILED\n" << infoLog << std::endl;
+			}
+		}
 
 		// Shader Program
 		this->Program = glCreateProgram();
@@ -122,6 +185,10 @@ public:
 		glAttachShader(this->Program, fragment);
 		if (geomActive) {
 			glAttachShader(this->Program, geometry);
+		}
+		if (tessControlActive && tessEvalActive) {
+			glAttachShader(this->Program, tessControl);
+			glAttachShader(this->Program, tessEval);
 		}
 		glLinkProgram(this->Program);
 		// Print linking errors if any
@@ -136,6 +203,10 @@ public:
 		glDeleteShader(fragment);
 		if (geomActive) {
 			glDeleteShader(geometry);
+		}
+		if (tessControlActive && tessEvalActive) {
+			glDeleteShader(tessControl);
+			glDeleteShader(tessEval);
 		}
 
 	}

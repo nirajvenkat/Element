@@ -24,7 +24,7 @@ void Grass::setup(){
 	glGenBuffers(1, &grassVBO);
 	glBindVertexArray(grassVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, grassVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(point), point, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(grassBlade), grassBlade, GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 	glBindVertexArray(0);
@@ -67,7 +67,8 @@ void Grass::drawPatches(Camera& camera, Shader& grassShader){
 		glUniform3f(glGetUniformLocation(grassShader.Program, "windDirection"), 0.0f, 0.0f, 1.0f);
 		glUniform1f(glGetUniformLocation(grassShader.Program, "windIntensity"), windIntensity);
 		glUniform1f(glGetUniformLocation(grassShader.Program, "time"), std::chrono::high_resolution_clock::now().time_since_epoch().count());
-		glDrawArrays(GL_POINTS, 0, 1);
+		glPatchParameteri(GL_PATCH_VERTICES, 3);
+		glDrawArrays(GL_LINE_STRIP, 0, 3);
 	}
 	glBindVertexArray(0);
 }

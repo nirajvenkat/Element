@@ -95,16 +95,16 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_CULL_FACE);
 	//glCullFace(GL_BACK);
-	glEnable(GL_MULTISAMPLE);
+	//glEnable(GL_MULTISAMPLE);
 
 	// Setup and compile our shaders
 	Shader defaultShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_vert.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_frag.glf");
-	Shader grassShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glf", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glg");
+	Shader grassShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glf", nullptr, "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.gltc", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glte");
 	//Shader defaultGeomShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_vert.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_frag.glf", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_geom.glg");
 
 	// Load models
 	Model nano("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Models/Nanosuit/nanosuit.obj");
-	Model sponza("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Models/Sponza/SponzaNoFlag.obj");
+	//Model sponza("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Models/Sponza/SponzaNoFlag.obj");
 
 	// Load textures
 	GLuint grassTexture = loadTexture("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Textures/grass.png", true, true);
@@ -149,7 +149,7 @@ int main()
 			model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // Translate it down a bit so it's at the center of the scene
 			model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// It's a bit too big for our scene, so scale it down
 			glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-			//nano.Draw(defaultShader);
+			nano.Draw(defaultShader);
 
 			defaultShader.Use();   // <-- Sponza
 			glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
@@ -158,7 +158,7 @@ int main()
 			// Draw the loaded model
 			model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// It's a bit too big for our scene, so scale it down
 			glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-			sponza.Draw(defaultShader);
+			//sponza.Draw(defaultShader);
 		}
 
 		// Flip Buffers and Draw

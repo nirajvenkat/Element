@@ -74,3 +74,10 @@ const GLfloat quadVertices[] = {
 const GLfloat point[] = {
 	0.0f, 0.0f, 0.0f
 };
+
+const GLfloat grassBlade[] = {
+	// Positions	 // Length descriptor
+	0.0f, 0.0f, 0.0f,
+	0.0f, 0.3f, 0.1f,
+	0.0f, 0.5f, 0.3f
+};

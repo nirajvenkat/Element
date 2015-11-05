@@ -43,7 +43,9 @@ file(GLOB PROJECT_SHADERS Element/Shaders/*.comp
                           Element/Shaders/*.geom
                           Element/Shaders/*.vert
                           Element/Shaders/*.glf
-                          Element/Shaders/*.glv)
+                          Element/Shaders/*.glv
+                          Element/Shaders/*.gltc
+                          Element/Shaders/*.glte)
 file(GLOB PROJECT_CONFIGS CMakeLists.txt
                           Readme.md
                          .gitattributes
