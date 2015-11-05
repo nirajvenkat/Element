@@ -1,7 +1,7 @@
 #version 400 core
 
-layout (points) in;
-layout (triangle_strip, max_vertices = 5) out;
+layout (lines) in;
+layout (triangle_strip, max_vertices = 4) out;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -11,20 +11,21 @@ uniform vec3 windDirection;
 uniform float windIntensity;
 uniform float time;
 
-void build_leaf(vec4 position) {    
-    gl_Position = projection * view * model * (position + vec4(-0.1f, -0.2f, 0.0f, 0.0f));    // 1:bottom-left
+void build_blade(vec4 base, vec4 top) {
+	gl_Position = projection * view * model * (base);									// 1: base
+    EmitVertex();
+    gl_Position = projection * view * model * (base + vec4(0.01f, 0.0f, 0.0f, 0.0f));   // 2: bottom-right
     EmitVertex();   
-    gl_Position = projection * view * model * (position + vec4( 0.1f, -0.2f, 0.0f, 0.0f));    // 2:bottom-right
+    gl_Position = projection * view * model * (top);									// 3: top
     EmitVertex();
-    gl_Position = projection * view * model * (position + vec4(-0.1f,  0.2f, 0.0f, 0.0f));    // 3:top-left
-    EmitVertex();
-    gl_Position = projection * view * model * (position + vec4( 0.1f,  0.2f, 0.0f, 0.0f));    // 4:top-right
-    EmitVertex();
-    gl_Position = projection * view * model * (position + vec4( 0.0f,  0.4f, 0.4f, 0.0f));    // 5:top
-    EmitVertex();
+	gl_Position = projection * view * model * (base + vec4(-0.01f, 0.0f, 0.0f, 0.0f));  // 4: bottom-left
+    EmitVertex();   
     EndPrimitive();
 }
 
-void main() {    
-    build_leaf(gl_in[0].gl_Position);
+void main() {
+	vec4 modelSpaceBasePos = inverse(projection * view * model) * gl_in[0].gl_Position;
+	vec4 modelSpaceTopPos = inverse(projection * view * model) * gl_in[1].gl_Position;
+
+    build_blade(modelSpaceBasePos, modelSpaceTopPos);
 }  
