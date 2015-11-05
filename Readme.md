@@ -10,7 +10,7 @@ Windy grass patches animated on vertex shader
 
 ![Alt text](http://i.imgur.com/En8nQHB.gif "Grass preview")
 
-(WIP) Procedurally generared grass. Grass blade build in geometry shader, tesselated with a bezier curve using control points
+(WIP) Funky looking procedurally generated grass. Grass blade build in geometry shader, tesselated with a bezier curve using control points
 
 ![Alt text](http://i.imgur.com/txtZwPS.png "Tess Geom grass")
 
