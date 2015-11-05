@@ -100,7 +100,6 @@ int main()
 	// Setup and compile our shaders
 	Shader defaultShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_vert.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_frag.glf");
 	Shader grassShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glf", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glg", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.gltc", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glte");
-	//Shader defaultGeomShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_vert.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_frag.glf", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_geom.glg");
 
 	// Load models
 	//Model nano("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Models/Nanosuit/nanosuit.obj");
