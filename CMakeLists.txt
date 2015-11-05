@@ -36,7 +36,7 @@ include_directories(Element/Headers/
                     Element/Vendor/stb/)
 
 file(GLOB VENDORS_SOURCES Element/Vendor/glad/src/glad.c)
-file(GLOB PROJECT_HEADERS Element/Headers/*.hpp)
+file(GLOB PROJECT_HEADERS Element/Headers/*.h)
 file(GLOB PROJECT_SOURCES Element/Sources/*.cpp)
 file(GLOB PROJECT_SHADERS Element/Shaders/*.comp
                           Element/Shaders/*.frag
@@ -44,6 +44,7 @@ file(GLOB PROJECT_SHADERS Element/Shaders/*.comp
                           Element/Shaders/*.vert
                           Element/Shaders/*.glf
                           Element/Shaders/*.glv
+                          Element/Shaders/*.glg
                           Element/Shaders/*.gltc
                           Element/Shaders/*.glte)
 file(GLOB PROJECT_CONFIGS CMakeLists.txt

@@ -68,7 +68,7 @@ void Grass::drawPatches(Camera& camera, Shader& grassShader){
 		glUniform1f(glGetUniformLocation(grassShader.Program, "windIntensity"), windIntensity);
 		glUniform1f(glGetUniformLocation(grassShader.Program, "time"), std::chrono::high_resolution_clock::now().time_since_epoch().count());
 		glPatchParameteri(GL_PATCH_VERTICES, 3);
-		glDrawArrays(GL_LINE_STRIP, 0, 3);
+		glDrawArrays(GL_PATCHES, 0, 3);
 	}
 	glBindVertexArray(0);
 }

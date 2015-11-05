@@ -7,7 +7,8 @@ void main() {
 	vec4 p1 = gl_in[1].gl_Position;
 	vec4 p2 = gl_in[2].gl_Position;
 	float u = gl_TessCoord.x;
-	// the basis functions:
+
+	// The basis functions:
 	float b0 = (1.0-u) * (1.0-u);
 	float b1 = 2.0 * (1.0-u) * u;
 	float b2 = u * u;
