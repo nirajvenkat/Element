@@ -98,15 +98,15 @@ int main()
 	//glEnable(GL_MULTISAMPLE);
 
 	// Setup and compile our shaders
-	Shader defaultShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_vert.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/sample_frag.glf");
-	Shader grassShader("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glv", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glf", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glg", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.gltc", "C:/Users/Niraj/Desktop/GitRepos/Element/Element/Shaders/grass.glte");
+	Shader defaultShader("../Element/Shaders/sample_vert.glv", "../Element/Shaders/sample_frag.glf");
+	Shader grassShader("../Element/Shaders/grass.glv", "../Element/Shaders/grass.glf", "../Element/Shaders/grass.glg", "../Element/Shaders/grass.gltc", "../Element/Shaders/grass.glte");
 
 	// Load models
-	//Model nano("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Models/Nanosuit/nanosuit.obj");
-	Model sponza("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Models/Sponza/SponzaNoFlag.obj");
+	//Model nano("../Element/Element/Models/Nanosuit/nanosuit.obj");
+	Model sponza("../Element/Models/Sponza/SponzaNoFlag.obj");
 
 	// Load textures
-	GLuint grassTexture = loadTexture("C:/Users/Niraj/Desktop/GitRepos/Element/Element/Textures/grass.png", true, true);
+	GLuint grassTexture = loadTexture("../Element/Textures/grass.png", true, true);
 
 	// Draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
