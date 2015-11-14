@@ -129,7 +129,7 @@ public:
 		if (!success)
 		{
 			glGetShaderInfoLog(vertex, 512, NULL, infoLog);
-			std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+			std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << '[ ' << vertexPath << ']: ' << infoLog << std::endl;
 		}
 		// Fragment Shader
 		fragment = glCreateShader(GL_FRAGMENT_SHADER);
@@ -140,7 +140,7 @@ public:
 		if (!success)
 		{
 			glGetShaderInfoLog(fragment, 512, NULL, infoLog);
-			std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+			std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << '[ ' << fragmentPath << ']: ' << infoLog << std::endl;
 		}
 		// Geometry Shader
 		if (geomActive) {
@@ -152,7 +152,7 @@ public:
 			if (!success)
 			{
 				glGetShaderInfoLog(geometry, 512, NULL, infoLog);
-				std::cout << "ERROR::SHADER::GEOMETRY::COMPILATION_FAILED\n" << infoLog << std::endl;
+				std::cout << "ERROR::SHADER::GEOMETRY::COMPILATION_FAILED\n" << '[ ' << geometryPath << ']: ' << infoLog << std::endl;
 			}
 		}
 		// Tesselation Shaders
@@ -165,7 +165,7 @@ public:
 			if (!success)
 			{
 				glGetShaderInfoLog(tessControl, 512, NULL, infoLog);
-				std::cout << "ERROR::SHADER::TESS_CONTROL::COMPILATION_FAILED\n" << infoLog << std::endl;
+				std::cout << "ERROR::SHADER::TESS_CONTROL::COMPILATION_FAILED\n" << '[ ' << tessControlPath << ']: ' << infoLog << std::endl;
 			}
 			tessEval = glCreateShader(GL_TESS_EVALUATION_SHADER);
 			glShaderSource(tessEval, 1, &teShaderCode, NULL);
@@ -175,7 +175,7 @@ public:
 			if (!success)
 			{
 				glGetShaderInfoLog(tessEval, 512, NULL, infoLog);
-				std::cout << "ERROR::SHADER::TESS_EVAL::COMPILATION_FAILED\n" << infoLog << std::endl;
+				std::cout << "ERROR::SHADER::TESS_EVAL::COMPILATION_FAILED\n" << '[ ' << tessEvalPath << ']: ' << infoLog << std::endl;
 			}
 		}
 

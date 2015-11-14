@@ -33,5 +33,5 @@ void main() {
 
     build_blade(modelSpaceBasePos, modelSpaceTopPos);
 
-	//distFactorGS = distFactorTES;
+	//distFactorGS = distFactorTES[0];
 }  

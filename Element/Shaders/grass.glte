@@ -18,5 +18,5 @@ void main() {
 	float b2 = u * u;
 
 	gl_Position = b0*p0 + b1*p1 + b2*p2;
-	//distFactorTES = distFactorTCS;
+	//distFactorTES[0] = distFactorTCS[0];
 }

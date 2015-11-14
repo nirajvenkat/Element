@@ -81,3 +81,14 @@ const GLfloat grassBlade[] = {
 	0.0f, 0.3f, 0.1f, 0.5f,
 	0.0f, 0.5f, 0.3f, 1.0f
 };
+
+const GLfloat fullScreenQuad[] = {
+	// Positions      // Texture Coords (swapped y coordinates because texture is flipped upside down)
+	-1.0f, 1.0f, 0.0f,
+	-1.0f, -1.0f, 0.0f,
+	1.0f, -1.0f, 0.0f,
+
+	1.0f, -1.0f, 0.0f,
+	1.0f, 1.0f, 0.0f,
+	-1.0f, 1.0f, 0.0f,
+};

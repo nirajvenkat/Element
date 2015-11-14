@@ -27,6 +27,9 @@ class Model
 {
 public:
 	/*  Functions   */
+	// Default Constructor
+	Model(){}
+
 	// Constructor, expects a filepath to a 3D model.
 	Model(GLchar* path)
 	{

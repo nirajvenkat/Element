@@ -15,8 +15,8 @@
 #include <ctime>
 
 // Properties
-bool ALLOW_FULLSCREEN = false;
-bool DRAW_MODELS = true;
+const bool ALLOW_FULLSCREEN = false;
+const bool DRAW_MODELS = false;
 
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -34,7 +34,8 @@ GLuint deltaTime = 0;
 GLuint lastFrame = 0;
 
 
-void physics(){
+void physics()
+{
 	//TODO
 	glm::vec3 planet1Pos = glm::vec3(0.0, 0.1, 0.7);
 	glm::vec3 planet1Vel = glm::vec3(0.3, 0.1, 0.7);
@@ -42,7 +43,8 @@ void physics(){
 	std::cout << "first planet" << " (" << planet1Pos.x << "," << planet1Pos.y << "," << planet1Pos.z << ") " << "traveling at speed: " << "(" << planet1Vel.x << "," << planet1Vel.y << "," << planet1Vel.z << ")" << std::endl;
 }
 
-void updateDeltaTime(){
+void updateDeltaTime()
+{
 	GLuint currentFrame = std::chrono::high_resolution_clock::now().time_since_epoch().count();
 	if (lastFrame == 0) deltaTime = 20;
 	else deltaTime = currentFrame - lastFrame;
@@ -52,6 +54,10 @@ void updateDeltaTime(){
 // The MAIN function, from here we start our application and run our Game loop
 int main()
 {
+	// Testing for multiplatform development
+	//#if defined(_WIN64)
+	/* Microsoft Windows (64-bit). ------------------------------ */
+
 	// Load GLFW and Create a Window
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -100,10 +106,16 @@ int main()
 	// Setup and compile our shaders
 	Shader defaultShader("../Element/Shaders/sample_vert.glv", "../Element/Shaders/sample_frag.glf");
 	Shader grassShader("../Element/Shaders/grass.glv", "../Element/Shaders/grass.glf", "../Element/Shaders/grass.glg", "../Element/Shaders/grass.gltc", "../Element/Shaders/grass.glte");
+	Shader fullScreenShader("../Element/Shaders/empty.glv", "../Element/Shaders/raymarch.glf", "../Element/Shaders/fullscreen.glg");
+
+	Model nano;
+	Model sponza;
 
 	// Load models
-	//Model nano("../Element/Element/Models/Nanosuit/nanosuit.obj");
-	Model sponza("../Element/Models/Sponza/SponzaNoFlag.obj");
+	if (DRAW_MODELS){
+		nano = Model("../Element/Models/Nanosuit/nanosuit.obj");
+		sponza = Model("../Element/Models/Sponza/SponzaNoFlag.obj");
+	}
 
 	// Load textures
 	GLuint grassTexture = loadTexture("../Element/Textures/grass.png", true, true);
@@ -148,7 +160,7 @@ int main()
 			model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // Translate it down a bit so it's at the center of the scene
 			model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// It's a bit too big for our scene, so scale it down
 			glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-			//nano.Draw(defaultShader);
+			nano.Draw(defaultShader);
 
 			defaultShader.Use();   // <-- Sponza
 			glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
@@ -159,12 +171,36 @@ int main()
 			glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 			sponza.Draw(defaultShader);
 		}
+		
+		// Raymarcher
+		fullScreenShader.Use();
+		glm::vec2 resolution = glm::vec2(mWidth, mHeight);
+		glUniform2f(glGetUniformLocation(fullScreenShader.Program, "iResolution"), resolution.x, resolution.y);
+		
+		
+		/*GLuint vao, vbo;
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+		glGenBuffers(1, &vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(fullScreenQuad), fullScreenQuad, GL_DYNAMIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+		glBindVertexArray(0);
+		glDrawArrays(GL_TRIANGLES, 0, 2);*/
+
+		GLuint vao;
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+		glDrawArrays(GL_POINTS, 0, 1);
 
 		// Flip Buffers and Draw
 		glfwSwapBuffers(mWindow);
 		glfwPollEvents();
 	}   glfwTerminate();
 	return EXIT_SUCCESS;
+
+	//#endif
 }
 
 #pragma region "User input"

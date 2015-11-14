@@ -3,7 +3,7 @@
 layout (location = 0) in vec3 position;
 layout (location = 1) in float distFactor;
 
-//out float distFactorVS;
+//out float distFactorVS[];
 
 uniform mat4 model;
 uniform mat4 view;
@@ -16,5 +16,5 @@ uniform float time;
 void main() {
 	// Output
     gl_Position = projection * view * model * vec4(position, 1.0f);
-	//distFactorVS = distFactor;
+	//distFactorVS[0] = distFactor;
 }
