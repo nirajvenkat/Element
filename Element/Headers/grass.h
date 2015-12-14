@@ -16,8 +16,8 @@ public:
 
 private:
 	GLuint textureID;
-	GLuint grassVAO, grassVBO;
-	std::vector<glm::vec3> patchPositions;
+	GLuint grassVAO, grassVBO, positionVBO;
+	std::vector<glm::mat4> patchPositions;
 	GLfloat windIntensity;
 
 };

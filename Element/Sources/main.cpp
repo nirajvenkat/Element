@@ -12,7 +12,6 @@
 #include <cstdio>
 #include <cstdlib>
 #include <chrono>
-#include <ctime>
 
 // Properties
 const bool ALLOW_FULLSCREEN = false;
@@ -129,6 +128,9 @@ int main()
 	grass.setup();
 	grass.assemblePatches();
 
+	// Time
+	auto timer = std::chrono::system_clock();
+
 	// Rendering Loop
 	while (glfwWindowShouldClose(mWindow) == false) {
 		if (glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -173,31 +175,28 @@ int main()
 		}
 		
 		// Raymarcher
+		/*
 		fullScreenShader.Use();
 		glm::vec2 resolution = glm::vec2(mWidth, mHeight);
 		glUniform2f(glGetUniformLocation(fullScreenShader.Program, "iResolution"), resolution.x, resolution.y);
-		
-		
-		/*GLuint vao, vbo;
-		glGenVertexArrays(1, &vao);
-		glBindVertexArray(vao);
-		glGenBuffers(1, &vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(fullScreenQuad), fullScreenQuad, GL_DYNAMIC_DRAW);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-		glBindVertexArray(0);
-		glDrawArrays(GL_TRIANGLES, 0, 2);*/
+		glUniform1f(glGetUniformLocation(fullScreenShader.Program, "time"), (float) timer.now().time_since_epoch().count());
 
 		GLuint vao;
 		glGenVertexArrays(1, &vao);
 		glBindVertexArray(vao);
 		glDrawArrays(GL_POINTS, 0, 1);
+		glBindVertexArray(0);
+		*/
+
+		//cout << timer.now().time_since_epoch().count() << "\n";
 
 		// Flip Buffers and Draw
 		glfwSwapBuffers(mWindow);
 		glfwPollEvents();
-	}   glfwTerminate();
+	}   
+	
+	glfwTerminate();
+
 	return EXIT_SUCCESS;
 
 	//#endif

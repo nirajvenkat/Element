@@ -7,7 +7,8 @@ layout (triangle_strip, max_vertices = 4) out;
 
 //out float distFactorGS;
 
-uniform mat4 model;
+in mat4 model[];
+
 uniform mat4 view;
 uniform mat4 projection;
 
@@ -16,20 +17,20 @@ uniform float windIntensity;
 uniform float time;
 
 void build_blade(vec4 base, vec4 top) {
-	gl_Position = projection * view * model * (base);									// 1: base
+	gl_Position = projection * view * model[0] * (base);									// 1: base
     EmitVertex();
-    gl_Position = projection * view * model * (base + vec4(0.01f, 0.0f, 0.0f, 0.0f));   // 2: bottom-right
+    gl_Position = projection * view * model[0] * (base + vec4(0.01f, 0.0f, 0.0f, 0.0f));   // 2: bottom-right
     EmitVertex();   
-    gl_Position = projection * view * model * (top);									// 3: top
+    gl_Position = projection * view * model[0] * (top);									// 3: top
     EmitVertex();
-	gl_Position = projection * view * model * (base + vec4(-0.01f, 0.0f, 0.0f, 0.0f));  // 4: bottom-left
+	gl_Position = projection * view * model[0] * (base + vec4(-0.01f, 0.0f, 0.0f, 0.0f));  // 4: bottom-left
     EmitVertex();   
-    EndPrimitive();
+    EndPrimitive(); 
 }
 
 void main() {
-	vec4 modelSpaceBasePos = inverse(projection * view * model) * gl_in[0].gl_Position;
-	vec4 modelSpaceTopPos = inverse(projection * view * model) * gl_in[1].gl_Position;
+	vec4 modelSpaceBasePos = inverse(projection * view * model[0]) * gl_in[0].gl_Position;
+	vec4 modelSpaceTopPos = inverse(projection * view * model[0]) * gl_in[1].gl_Position;
 
     build_blade(modelSpaceBasePos, modelSpaceTopPos);
 
