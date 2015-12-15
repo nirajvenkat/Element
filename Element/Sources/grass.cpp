@@ -36,7 +36,7 @@ void Grass::setup(){
 	glVertexAttribDivisor(1, 0);
 
 	// Binding the model matrices
-	/*
+	
 	int pos = 2;
 	int pos1 = pos + 0;
 	int pos2 = pos + 1;
@@ -56,7 +56,7 @@ void Grass::setup(){
 	glVertexAttribDivisor(pos2, 1);
 	glVertexAttribDivisor(pos3, 1);
 	glVertexAttribDivisor(pos4, 1);
-	*/
+	
 	// So VAO isnt changed from the outside
 	glBindVertexArray(0);
 }
@@ -89,20 +89,20 @@ void Grass::updateWindIntensity() {
 
 void Grass::drawPatches(Camera& camera, Shader& grassShader){
 	glBindVertexArray(grassVAO);
-	for (glm::mat4 pos : patchPositions) {
-		glm::mat4 model = pos;
+	//for (glm::mat4 pos : patchPositions) {
+		//glm::mat4 model = pos;
 		glm::mat4 projection = glm::perspective(45.0f, 800.0f / 600.0f, 0.1f, 200.0f);
 		glm::mat4 view = camera.GetViewMatrix();
 
-		glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		//glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 		glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(glGetUniformLocation(grassShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 		glUniform3f(glGetUniformLocation(grassShader.Program, "windDirection"), 0.0f, 0.0f, 1.0f);
 		glUniform1f(glGetUniformLocation(grassShader.Program, "windIntensity"), windIntensity);
 		glUniform1f(glGetUniformLocation(grassShader.Program, "time"), (float) std::chrono::high_resolution_clock::now().time_since_epoch().count());
 		glPatchParameteri(GL_PATCH_VERTICES, 3);
-		glDrawArrays(GL_PATCHES, 0, 3);
-		//glDrawArraysInstanced(GL_PATCHES, 0, 3, patchPositions.size());
-	}
+		//glDrawArrays(GL_PATCHES, 0, 3);
+		glDrawArraysInstanced(GL_PATCHES, 0, 3, patchPositions.size());
+	//}
 	glBindVertexArray(0);
 }
