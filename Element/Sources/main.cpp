@@ -15,7 +15,7 @@
 
 // Properties
 const bool ALLOW_FULLSCREEN = false;
-const bool DRAW_MODELS = false;
+const bool DRAW_MODELS = true;
 
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -113,7 +113,7 @@ int main()
 	// Load models
 	if (DRAW_MODELS){
 		nano = Model("../Element/Models/Nanosuit/nanosuit.obj");
-		sponza = Model("../Element/Models/Sponza/SponzaNoFlag.obj");
+		//sponza = Model("../Element/Models/Sponza/SponzaNoFlag.obj");
 	}
 
 	// Load textures
@@ -171,7 +171,7 @@ int main()
 			// Draw the loaded model
 			model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// It's a bit too big for our scene, so scale it down
 			glUniformMatrix4fv(glGetUniformLocation(defaultShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-			sponza.Draw(defaultShader);
+			//sponza.Draw(defaultShader);
 		}
 		
 		// Raymarcher

@@ -14,7 +14,8 @@ uniform float windIntensity;
 uniform float time;
 
 void main() {
+	model = modelMatrixInstanced;
+
 	// Output
     gl_Position = projection * view * modelMatrixInstanced * vec4(position, 1.0f);
-	model = modelMatrixInstanced;
 }
