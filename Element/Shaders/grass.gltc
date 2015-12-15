@@ -2,14 +2,15 @@
 
 layout (vertices = 3) out;
 
-//in float distFactorVS[];
+flat in mat4 modelVS[];
 
-//out float distFactorTCS[];
+out mat4 modelTC[];
 
 void main() {
+	modelTC[gl_InvocationID] = modelVS[gl_InvocationID];
+
 	gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 	gl_TessLevelOuter[0] = 8.0f;
 	gl_TessLevelOuter[1] = 8.0f;
 	gl_TessLevelInner[0] = 4.0f;
-	//distFactorTCS[gl_InvocationID] = distFactorVS[gl_InvocationID];
 }

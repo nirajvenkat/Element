@@ -4,7 +4,7 @@ layout (location = 0) in vec3 position;
 layout (location = 1) in float distFactor;
 layout (location = 2) in mat4 modelMatrixInstanced;
 
-out mat4 model;
+flat out mat4 modelVS;
 
 uniform mat4 view;
 uniform mat4 projection;
@@ -14,7 +14,7 @@ uniform float windIntensity;
 uniform float time;
 
 void main() {
-	model = modelMatrixInstanced;
+	modelVS = modelMatrixInstanced;
 
 	// Output
     gl_Position = projection * view * modelMatrixInstanced * vec4(position, 1.0f);

@@ -3,11 +3,7 @@
 layout (lines) in;
 layout (triangle_strip, max_vertices = 4) out;
 
-//in float distFactorTES[];
-
-//out float distFactorGS;
-
-in mat4 model[];
+flat in mat4 model[];
 
 uniform mat4 view;
 uniform mat4 projection;
